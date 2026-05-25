@@ -8,7 +8,7 @@ on:
       - "hermes-agent/**"
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/hermes-agent
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/hermes-agent
 
 jobs:
   build:

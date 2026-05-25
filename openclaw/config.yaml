@@ -4,7 +4,7 @@ version: 0.1.0
 slug: openclaw
 description: AI agent gateway with web UI by OpenClaw
 url: https://github.com/nishantapatil3/hassio-apps
-image: ghcr.io/nishantapatil3/openclaw
+image: ghcr.io/nishantapatil3/hassio-apps/openclaw
 startup: services
 init: true
 webui: "http://[HOST]:[PORT:18789]"

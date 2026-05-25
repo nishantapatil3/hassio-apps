@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+source /opt/hermes/.venv/bin/activate
+
 OPTIONS_FILE="/data/options.json"
 
 # --- Read HA options and export environment ---
@@ -45,14 +47,15 @@ mkdir -p /data/hermes
 
 # Point hermes data to persistent storage
 export HOME="/data/hermes"
+export HERMES_HOME="/data/hermes"
 
 # --- Run setup if first launch ---
 if [ ! -f /data/hermes/.initialized ]; then
     echo "First run detected, running setup..."
-    hermes-agent setup --non-interactive 2>/dev/null || true
+    hermes setup --non-interactive 2>/dev/null || true
     touch /data/hermes/.initialized
 fi
 
 # --- Start Hermes Agent ---
 echo "Starting Hermes Agent..."
-exec hermes-agent "$@"
+exec hermes "$@"

@@ -4,7 +4,7 @@ version: 1.1.9
 slug: litellm
 description: OpenAI-compatible proxy for 100+ LLM providers
 url: https://github.com/nishantapatil3/hassio-app-litellm
-image: ghcr.io/nishantapatil3/litellm
+image: ghcr.io/nishantapatil3/hassio-apps/litellm
 startup: services
 init: true
 webui: "http://[HOST]:[PORT:4000]/ui"
