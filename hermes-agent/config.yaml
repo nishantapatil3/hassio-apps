@@ -21,7 +21,8 @@ map:
   - share:rw
 options:
   api_server_enabled: true
-  api_server_key: ""
+  api_server_key: "hermesagent"
+  gateway_allow_all_users: true
   dashboard_enabled: true
   api_keys:
     - name: OPENAI_API_KEY
@@ -30,6 +31,7 @@ options:
 schema:
   api_server_enabled: bool
   api_server_key: str
+  gateway_allow_all_users: bool
   dashboard_enabled: bool
   api_keys:
     - name: list(OPENAI_API_KEY|ANTHROPIC_API_KEY|GOOGLE_API_KEY|GROQ_API_KEY|MISTRAL_API_KEY|OPENROUTER_API_KEY)

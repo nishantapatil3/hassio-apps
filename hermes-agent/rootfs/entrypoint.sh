@@ -13,13 +13,13 @@ if [ -f "$OPTIONS_FILE" ]; then
     # API Server configuration
     API_SERVER_ENABLED=$(jq -r '.api_server_enabled // "true"' "$OPTIONS_FILE")
     API_SERVER_KEY=$(jq -r '.api_server_key // empty' "$OPTIONS_FILE")
+    GATEWAY_ALLOW_ALL_USERS=$(jq -r '.gateway_allow_all_users // "true"' "$OPTIONS_FILE")
     DASHBOARD_ENABLED=$(jq -r '.dashboard_enabled // "true"' "$OPTIONS_FILE")
 
     export API_SERVER_ENABLED="${API_SERVER_ENABLED}"
     export API_SERVER_HOST="0.0.0.0"
-
     export API_SERVER_KEY="${API_SERVER_KEY:-hermesagent}"
-    export GATEWAY_ALLOW_ALL_USERS=true
+    export GATEWAY_ALLOW_ALL_USERS="${GATEWAY_ALLOW_ALL_USERS}"
 
     if [ "$DASHBOARD_ENABLED" = "true" ]; then
         export HERMES_DASHBOARD=1
