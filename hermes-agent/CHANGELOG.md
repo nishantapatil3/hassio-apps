@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0
+
+- `.env` is now the single source of truth for all hermes configuration
+- `.env` editable via HA File Editor at `addon_configs/hermes-agent/.env`
+- Start hermes dashboard as background process (port 9119)
+- Simplify config UI to just `api_server_key` and provider API keys
+- First boot generates `.env` from config UI; subsequent runs use the file directly
+
 ## 0.3.1
 
 - Expose Hermes dashboard Web UI in HA sidebar ("Open Web UI" button)
