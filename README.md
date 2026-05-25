@@ -1,53 +1,56 @@
-# Home Assistant Add-on: LiteLLM
+# Home Assistant Add-on Repository
 
 [![License][license-shield]](LICENSE.md)
+
+## Add-ons
+
+This repository contains the following Home Assistant add-ons:
+
+### [LiteLLM](litellm/)
 
 ![Supports aarch64 Architecture][aarch64-shield]
 ![Supports amd64 Architecture][amd64-shield]
 
-[LiteLLM](https://github.com/BerriAI/litellm) proxy server as a
-Home Assistant add-on. Provides a unified OpenAI-compatible API gateway
-for 100+ LLM providers.
+OpenAI-compatible proxy for 100+ LLM providers with a bundled PostgreSQL
+database, web dashboard, key management, and usage tracking.
 
-## About
+- **Port 4000** — API & Admin UI
 
-This add-on packages the LiteLLM proxy with a bundled PostgreSQL database
-for Home Assistant. It enables:
+### [Hermes Agent](hermes-agent/)
 
-- **Unified API**: Single OpenAI-compatible endpoint for all LLM providers
-- **Multiple Providers**: OpenAI, Anthropic, Google, Azure, Ollama, Groq, and more
-- **Key Management**: Virtual API keys with per-key budgets and rate limits
-- **Load Balancing**: Route across multiple models with fallbacks
-- **Usage Tracking**: Monitor spend and usage per key/team/model
-- **Web Dashboard**: Manage models, keys, and teams via UI
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports amd64 Architecture][amd64-shield]
 
-## Supported Access
+Autonomous AI agent with OpenAI-compatible API by Nous Research. Includes
+a web dashboard for monitoring and chatting with the agent.
 
-The LiteLLM API and Admin UI are exposed directly on port `4000`:
+- **Port 8642** — Gateway API
+- **Port 9119** — Dashboard
 
-- API: `http://<your-ha-ip>:4000`
-- Admin UI: `http://<your-ha-ip>:4000/ui`
+### [OpenClaw](openclaw/)
 
-Home Assistant sidebar/ingress access is intentionally not enabled. LiteLLM's
-dynamic Admin UI does not reliably support Home Assistant's dynamic ingress
-base path without brittle response rewriting.
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports amd64 Architecture][amd64-shield]
+
+AI agent gateway with web UI by OpenClaw. Supports multiple model providers
+and integrates with LiteLLM for unified model routing.
+
+- **Port 18789** — Gateway & Web UI
 
 ## Installation
 
 1. Add this repository URL to your Home Assistant add-on store:
    ```
-   https://github.com/nishantapatil3/hassio-app-litellm
+   https://github.com/nishantapatil3/hassio-apps
    ```
-2. Find "LiteLLM" in the add-on store and click Install.
-3. Configure your models and API keys in the Configuration tab.
+2. Find the add-on you want in the store and click **Install**.
+3. Configure via the **Configuration** tab.
 4. Start the add-on.
-5. Access the proxy at `http://<your-ha-ip>:4000`.
 
-## Documentation
+## License
 
-See the [full documentation](litellm/DOCS.md) for configuration examples
-and usage instructions.
+See [LICENSE.md](LICENSE.md).
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[license-shield]: https://img.shields.io/github/license/nishantapatil3/hassio-app-litellm.svg
+[license-shield]: https://img.shields.io/github/license/nishantapatil3/hassio-apps.svg
