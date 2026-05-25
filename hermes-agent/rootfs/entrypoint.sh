@@ -49,6 +49,13 @@ mkdir -p /data/hermes
 export HOME="/data/hermes"
 export HERMES_HOME="/data/hermes"
 
+# --- Write .env for hermes to read ---
+cat > /data/hermes/.env <<ENVEOF
+GATEWAY_ALLOW_ALL_USERS=${GATEWAY_ALLOW_ALL_USERS:-true}
+API_SERVER_KEY=${API_SERVER_KEY:-hermesagent}
+API_SERVER_HOST=0.0.0.0
+ENVEOF
+
 # --- Run setup if first launch ---
 if [ ! -f /data/hermes/.initialized ]; then
     echo "First run detected, running setup..."
