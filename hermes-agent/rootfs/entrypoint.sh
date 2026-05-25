@@ -49,12 +49,23 @@ mkdir -p /data/hermes
 export HOME="/data/hermes"
 export HERMES_HOME="/data/hermes"
 
-# --- Write .env for hermes to read ---
-cat > /data/hermes/.env <<ENVEOF
-GATEWAY_ALLOW_ALL_USERS=${GATEWAY_ALLOW_ALL_USERS:-true}
-API_SERVER_KEY=${API_SERVER_KEY:-hermesagent}
-API_SERVER_HOST=0.0.0.0
-ENVEOF
+# --- Generate .env from HA config UI options ---
+{
+    echo "GATEWAY_ALLOW_ALL_USERS=${GATEWAY_ALLOW_ALL_USERS:-true}"
+    echo "API_SERVER_KEY=${API_SERVER_KEY:-hermesagent}"
+    echo "API_SERVER_HOST=0.0.0.0"
+    # Write all provider API keys
+    if [ -f "$OPTIONS_FILE" ]; then
+        KEYS_LENGTH=$(jq -r '.api_keys | length' "$OPTIONS_FILE")
+        for ((i=0; i<KEYS_LENGTH; i++)); do
+            KEY_NAME=$(jq -r ".api_keys[$i].name" "$OPTIONS_FILE")
+            KEY_VALUE=$(jq -r ".api_keys[$i].value" "$OPTIONS_FILE")
+            if [ -n "$KEY_VALUE" ]; then
+                echo "${KEY_NAME}=${KEY_VALUE}"
+            fi
+        done
+    fi
+} > /data/hermes/.env
 
 # --- Run setup if first launch ---
 if [ ! -f /data/hermes/.initialized ]; then
