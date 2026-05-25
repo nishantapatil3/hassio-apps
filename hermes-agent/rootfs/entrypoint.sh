@@ -18,9 +18,8 @@ if [ -f "$OPTIONS_FILE" ]; then
     export API_SERVER_ENABLED="${API_SERVER_ENABLED}"
     export API_SERVER_HOST="0.0.0.0"
 
-    if [ -n "$API_SERVER_KEY" ]; then
-        export API_SERVER_KEY="${API_SERVER_KEY}"
-    fi
+    export API_SERVER_KEY="${API_SERVER_KEY:-hermesagent}"
+    export GATEWAY_ALLOW_ALL_USERS=true
 
     if [ "$DASHBOARD_ENABLED" = "true" ]; then
         export HERMES_DASHBOARD=1
