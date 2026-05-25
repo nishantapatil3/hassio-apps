@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1
+
+- Expose Hermes dashboard Web UI in HA sidebar ("Open Web UI" button)
+- Update icon
+
 ## 0.3.0
 
 - Make .env editable via HA File Editor (addon_configs)
