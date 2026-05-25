@@ -2,6 +2,7 @@
 set -e
 
 source /opt/hermes/.venv/bin/activate
+export HERMES_ALLOW_ROOT_GATEWAY=1
 
 OPTIONS_FILE="/data/options.json"
 
