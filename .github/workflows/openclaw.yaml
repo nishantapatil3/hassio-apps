@@ -1,14 +1,14 @@
 ---
-name: Build LiteLLM
+name: Build OpenClaw
 
 on:
   push:
     branches: [main]
     paths:
-      - "litellm/**"
+      - "openclaw/**"
 
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/litellm
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/openclaw
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
       - name: Get version from config.yaml
         id: version
         run: |
-          version=$(grep '^version:' litellm/config.yaml | awk '{print $2}')
+          version=$(grep '^version:' openclaw/config.yaml | awk '{print $2}')
           echo "version=${version}" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
@@ -44,16 +44,16 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./litellm
+          context: ./openclaw
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
             ${{ env.IMAGE_NAME }}:latest
           labels: |
-            io.hass.name=LiteLLM
-            io.hass.description=OpenAI-compatible proxy for 100+ LLM providers
+            io.hass.name=OpenClaw
+            io.hass.description=AI agent gateway with web UI
             io.hass.type=addon
             io.hass.version=${{ steps.version.outputs.version }}
-          cache-from: type=gha,scope=litellm
-          cache-to: type=gha,mode=max,scope=litellm
+          cache-from: type=gha,scope=openclaw
+          cache-to: type=gha,mode=max,scope=openclaw
