@@ -7,3 +7,4 @@
 - LiteLLM proxy integration
 - Configurable API keys for multiple providers
 - Persistent state across restarts
+

@@ -40,3 +40,4 @@ All notable changes to this project will be documented in this file.
 - Structured configuration with separate API keys, model list, and settings
 - Support for aarch64 and amd64 architectures
 - Tag-based versioning with automated releases
+
