@@ -1,6 +1,6 @@
 ---
 name: Hermes Agent
-version: 0.2.0
+version: 0.2.1
 slug: hermes-agent
 description: Autonomous AI agent with OpenAI-compatible API by Nous Research
 url: https://github.com/nishantapatil3/hassio-apps
