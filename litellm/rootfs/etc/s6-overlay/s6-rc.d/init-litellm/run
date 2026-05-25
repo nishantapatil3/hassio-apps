@@ -1,0 +1,76 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Add-on: LiteLLM
+# Initializes the LiteLLM configuration and PostgreSQL data directory
+# ==============================================================================
+
+bashio::log.info "Initializing LiteLLM..."
+
+# Create persistent data directory
+mkdir -p /data/litellm/postgres
+
+# Generate database password on first run
+if ! bashio::fs.file_exists "/data/litellm/.db_password"; then
+    bashio::log.info "First run detected, generating database credentials..."
+    head -c 32 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9' | head -c 24 \
+        > /data/litellm/.db_password
+    chmod 600 /data/litellm/.db_password
+fi
+
+readonly DB_PASSWORD=$(cat /data/litellm/.db_password)
+
+# Initialize PostgreSQL data directory if needed
+if ! bashio::fs.file_exists "/data/litellm/postgres/PG_VERSION"; then
+    bashio::log.info "Initializing PostgreSQL database..."
+    chown -R postgres:postgres /data/litellm/postgres
+    su - postgres -c "initdb -D /data/litellm/postgres"
+
+    # Configure PostgreSQL for local connections
+    {
+        echo "local all all trust"
+        echo "host all all 127.0.0.1/32 md5"
+    } > /data/litellm/postgres/pg_hba.conf
+
+    echo "unix_socket_directories = '/run/postgresql'" \
+        >> /data/litellm/postgres/postgresql.conf
+    echo "listen_addresses = '127.0.0.1'" \
+        >> /data/litellm/postgres/postgresql.conf
+
+    mkdir -p /run/postgresql
+    chown postgres:postgres /run/postgresql
+
+    # Start PostgreSQL temporarily to create the database and user
+    su - postgres -c "pg_ctl start -D /data/litellm/postgres -w"
+    su - postgres -c "psql -c \"CREATE USER litellm WITH PASSWORD '${DB_PASSWORD}';\""
+    su - postgres -c "psql -c \"CREATE DATABASE litellm OWNER litellm;\""
+    su - postgres -c "pg_ctl stop -D /data/litellm/postgres -w"
+fi
+
+# Ensure run directory exists
+mkdir -p /run/postgresql
+chown postgres:postgres /run/postgresql
+
+# Write LiteLLM config from HA options
+bashio::log.info "Writing LiteLLM configuration..."
+bashio::config 'config_file' > /data/litellm/config.yaml
+
+# Export environment variables for LiteLLM
+{
+    echo "LITELLM_MASTER_KEY=$(bashio::config 'master_key')"
+    echo "DATABASE_URL=postgresql://litellm:${DB_PASSWORD}@127.0.0.1:5432/litellm"
+    echo "STORE_MODEL_IN_DB=True"
+    echo "LITELLM_LOG=$(bashio::config 'log_level')"
+} > /var/run/s6/container_environment/litellm_env
+
+# Write individual env files for s6 container environment
+printf "%s" "$(bashio::config 'master_key')" \
+    > /var/run/s6/container_environment/LITELLM_MASTER_KEY
+printf "%s" "postgresql://litellm:${DB_PASSWORD}@127.0.0.1:5432/litellm" \
+    > /var/run/s6/container_environment/DATABASE_URL
+printf "%s" "True" \
+    > /var/run/s6/container_environment/STORE_MODEL_IN_DB
+printf "%s" "$(bashio::config 'log_level')" \
+    > /var/run/s6/container_environment/LITELLM_LOG
+
+bashio::log.info "Initialization complete."

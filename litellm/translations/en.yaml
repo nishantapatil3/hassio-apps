@@ -1,0 +1,29 @@
+---
+configuration:
+  master_key:
+    name: Master Key
+    description: >-
+      Authentication key for the LiteLLM proxy API. All requests must include
+      this key as a Bearer token. Leave empty to disable auth.
+  api_keys:
+    name: API Keys
+    description: >-
+      Provider API keys. Add one entry per provider (e.g. name: OPENAI_API_KEY,
+      value: sk-...). Reference them in model_list by the name.
+  model_list:
+    name: Models
+    description: >-
+      List of LLM models to expose. Each entry needs a friendly model_name,
+      the provider/model string, and optionally an api_key_name matching an
+      entry from API Keys above.
+  general_settings:
+    name: General Settings
+    description: >-
+      Proxy-level settings like store_model_in_db (allows adding models via UI).
+  litellm_settings:
+    name: LiteLLM Settings
+    description: >-
+      Controls LiteLLM behavior: drop_params, telemetry, retries, timeouts.
+  log_level:
+    name: Log level
+    description: Controls the verbosity of add-on logging.

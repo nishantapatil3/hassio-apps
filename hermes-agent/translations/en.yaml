@@ -1,0 +1,24 @@
+---
+configuration:
+  api_server_enabled:
+    name: API Server Enabled
+    description: >-
+      Enable the OpenAI-compatible API server on port 8642.
+  api_server_key:
+    name: API Server Key
+    description: >-
+      Authentication key for the API server. Must be at least 8 characters.
+      Leave empty to disable authentication.
+  dashboard_enabled:
+    name: Dashboard Enabled
+    description: >-
+      Enable the Hermes web dashboard on port 9119 for monitoring and
+      interacting with the agent.
+  api_keys:
+    name: API Keys
+    description: >-
+      Provider API keys for LLM backends. Add one entry per provider
+      (e.g. name: OPENAI_API_KEY, value: sk-...).
+  log_level:
+    name: Log Level
+    description: Controls the verbosity of add-on logging.

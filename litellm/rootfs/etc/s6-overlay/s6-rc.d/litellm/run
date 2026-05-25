@@ -1,0 +1,21 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Add-on: LiteLLM
+# Runs the LiteLLM proxy server
+# ==============================================================================
+
+bashio::log.info "Starting LiteLLM proxy..."
+
+# Wait for PostgreSQL to be ready
+until pg_isready -h 127.0.0.1 -p 5432 -U litellm -q; do
+    bashio::log.debug "Waiting for PostgreSQL to be ready..."
+    sleep 1
+done
+
+bashio::log.info "PostgreSQL is ready, launching LiteLLM..."
+
+exec litellm \
+    --config /data/litellm/config.yaml \
+    --port 4000 \
+    --host 0.0.0.0

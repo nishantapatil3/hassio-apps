@@ -1,0 +1,36 @@
+---
+configuration:
+  gateway_token:
+    name: Gateway Token
+    description: >-
+      Authentication token for the gateway WebSocket connection. Leave empty
+      to have OpenClaw auto-generate one on first start. Use at least 32
+      hex characters for production.
+  gateway_bind:
+    name: Gateway Bind
+    description: >-
+      Network bind mode. Use "lan" to allow connections from other devices
+      on your network, or "loopback" for localhost only.
+  api_keys:
+    name: API Keys
+    description: >-
+      Provider API keys for LLM backends. Add one entry per provider
+      (e.g. name: OPENAI_API_KEY, value: sk-...).
+  litellm_base_url:
+    name: LiteLLM Base URL
+    description: >-
+      URL of a LiteLLM proxy to use as a model provider (e.g.
+      http://homeassistant.local:4000). Leave empty to use direct provider keys.
+  litellm_api_key:
+    name: LiteLLM API Key
+    description: >-
+      API key for the LiteLLM proxy. Defaults to "sk-1234" if not set.
+  litellm_model_name:
+    name: LiteLLM Model Name
+    description: >-
+      Model identifier exposed by the LiteLLM proxy (e.g. "gpt-4").
+      Required if LiteLLM Base URL is set.
+  timezone:
+    name: Timezone
+    description: >-
+      Container timezone (e.g. America/Los_Angeles, Europe/London).

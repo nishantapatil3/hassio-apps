@@ -1,0 +1,10 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Add-on: LiteLLM
+# Runs the PostgreSQL database server
+# ==============================================================================
+
+bashio::log.info "Starting PostgreSQL..."
+
+exec su - postgres -c "postgres -D /data/litellm/postgres"
