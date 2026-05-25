@@ -86,6 +86,15 @@ if [ ! -f /data/hermes/.initialized ]; then
     touch /data/hermes/.initialized
 fi
 
+# --- Start dashboard in background if enabled ---
+if [ "${HERMES_DASHBOARD}" = "1" ]; then
+    echo "Starting hermes dashboard on ${HERMES_DASHBOARD_HOST:-0.0.0.0}:${HERMES_DASHBOARD_PORT:-9119} (background)"
+    hermes dashboard \
+        --host "${HERMES_DASHBOARD_HOST:-0.0.0.0}" \
+        --port "${HERMES_DASHBOARD_PORT:-9119}" \
+        --no-open --insecure 2>&1 | sed -u 's/^/[dashboard] /' &
+fi
+
 # --- Start Hermes Agent ---
 echo "Starting Hermes Agent..."
 exec hermes "$@"
