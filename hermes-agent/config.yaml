@@ -17,6 +17,7 @@ ports_description:
   8642/tcp: Hermes Gateway API & health endpoint
   9119/tcp: Hermes Dashboard Web UI
 map:
+  - addon_config:rw
   - config:rw
   - share:rw
 options:

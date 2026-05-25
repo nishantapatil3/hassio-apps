@@ -49,23 +49,35 @@ mkdir -p /data/hermes
 export HOME="/data/hermes"
 export HERMES_HOME="/data/hermes"
 
-# --- Generate .env from HA config UI options ---
-{
-    echo "GATEWAY_ALLOW_ALL_USERS=${GATEWAY_ALLOW_ALL_USERS:-true}"
-    echo "API_SERVER_KEY=${API_SERVER_KEY:-hermesagent}"
-    echo "API_SERVER_HOST=0.0.0.0"
-    # Write all provider API keys
-    if [ -f "$OPTIONS_FILE" ]; then
-        KEYS_LENGTH=$(jq -r '.api_keys | length' "$OPTIONS_FILE")
-        for ((i=0; i<KEYS_LENGTH; i++)); do
-            KEY_NAME=$(jq -r ".api_keys[$i].name" "$OPTIONS_FILE")
-            KEY_VALUE=$(jq -r ".api_keys[$i].value" "$OPTIONS_FILE")
-            if [ -n "$KEY_VALUE" ]; then
-                echo "${KEY_NAME}=${KEY_VALUE}"
-            fi
-        done
-    fi
-} > /data/hermes/.env
+# --- .env: user-editable file takes priority, otherwise generate from config UI ---
+ADDON_CONFIG_ENV="/addon_configs/hermes-agent/.env"
+if [ -f "$ADDON_CONFIG_ENV" ]; then
+    echo "Using .env from addon_configs (editable via File Editor)."
+    cp "$ADDON_CONFIG_ENV" /data/hermes/.env
+else
+    echo "No custom .env found, generating from add-on config UI options."
+    {
+        echo "# Edit this file via HA File Editor at /addon_configs/hermes-agent/.env"
+        echo "# Changes here override the add-on config UI settings."
+        echo ""
+        echo "GATEWAY_ALLOW_ALL_USERS=${GATEWAY_ALLOW_ALL_USERS:-true}"
+        echo "API_SERVER_KEY=${API_SERVER_KEY:-hermesagent}"
+        echo "API_SERVER_HOST=0.0.0.0"
+        if [ -f "$OPTIONS_FILE" ]; then
+            KEYS_LENGTH=$(jq -r '.api_keys | length' "$OPTIONS_FILE")
+            for ((i=0; i<KEYS_LENGTH; i++)); do
+                KEY_NAME=$(jq -r ".api_keys[$i].name" "$OPTIONS_FILE")
+                KEY_VALUE=$(jq -r ".api_keys[$i].value" "$OPTIONS_FILE")
+                if [ -n "$KEY_VALUE" ]; then
+                    echo "${KEY_NAME}=${KEY_VALUE}"
+                fi
+            done
+        fi
+    } > /data/hermes/.env
+    # Copy generated .env to addon_configs so user can edit it next time
+    mkdir -p /addon_configs/hermes-agent
+    cp /data/hermes/.env "$ADDON_CONFIG_ENV"
+fi
 
 # --- Run setup if first launch ---
 if [ ! -f /data/hermes/.initialized ]; then
