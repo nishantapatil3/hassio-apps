@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.0
+
+- All hermes settings now configurable from the HA add-on Configuration page
+- Added fields: model/provider, max turns, reasoning effort, memory, compression,
+  terminal backend, language, API timeout, YOLO mode, web search backend
+- Added search tool API keys: Tavily, Firecrawl, Exa, SearXNG URL
+- Entrypoint generates .env and config.yaml from HA options on every start
+
 ## 0.4.0
 
 - `.env` is now the single source of truth for all hermes configuration

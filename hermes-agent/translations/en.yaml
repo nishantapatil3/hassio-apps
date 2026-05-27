@@ -1,24 +1,90 @@
 ---
 configuration:
-  api_server_enabled:
-    name: API Server Enabled
-    description: >-
-      Enable the OpenAI-compatible API server on port 8642.
   api_server_key:
     name: API Server Key
     description: >-
-      Authentication key for the API server. Must be at least 8 characters.
-      Leave empty to disable authentication.
+      Authentication key for the API server (min 8 characters).
+      Clients pass this as a Bearer token.
+  gateway_allow_all_users:
+    name: Allow All Users
+    description: >-
+      Allow all users to access the gateway without authentication.
   dashboard_enabled:
     name: Dashboard Enabled
     description: >-
-      Enable the Hermes web dashboard on port 9119 for monitoring and
-      interacting with the agent.
-  api_keys:
-    name: API Keys
+      Enable the Hermes web dashboard on port 9119.
+  dashboard_port:
+    name: Dashboard Port
     description: >-
-      Provider API keys for LLM backends. Add one entry per provider
-      (e.g. name: OPENAI_API_KEY, value: sk-...).
-  log_level:
-    name: Log Level
-    description: Controls the verbosity of add-on logging.
+      Port for the Hermes web dashboard.
+  model_default:
+    name: Default Model
+    description: >-
+      Default LLM model (e.g. anthropic/claude-sonnet-4-20250514,
+      openai/gpt-4o, openrouter/anthropic/claude-sonnet-4-20250514).
+  model_provider:
+    name: Model Provider
+    description: >-
+      LLM provider to use for the default model.
+  agent_max_turns:
+    name: Max Turns
+    description: >-
+      Maximum number of agent iterations per session (1-500).
+  agent_reasoning_effort:
+    name: Reasoning Effort
+    description: >-
+      Controls how much reasoning the model does. Leave empty for default.
+  memory_enabled:
+    name: Memory Enabled
+    description: >-
+      Enable persistent memory across sessions.
+  compression_enabled:
+    name: Compression Enabled
+    description: >-
+      Enable context compression when approaching token limits.
+  compression_threshold:
+    name: Compression Threshold
+    description: >-
+      Fraction of context window usage that triggers compression (0.1-0.9).
+  terminal_backend:
+    name: Terminal Backend
+    description: >-
+      Backend for shell command execution (local, docker, or ssh).
+  hermes_language:
+    name: Language
+    description: >-
+      UI language for the agent interface.
+  hermes_api_timeout:
+    name: API Timeout (seconds)
+    description: >-
+      Maximum time to wait for an LLM API call (60-7200 seconds).
+  hermes_yolo_mode:
+    name: YOLO Mode
+    description: >-
+      Disable safety approval prompts. Agent executes all actions
+      without asking for confirmation.
+  web_search_backend:
+    name: Web Search Backend
+    description: >-
+      Backend for web search. Leave empty to disable. Requires
+      corresponding API key below.
+  searxng_url:
+    name: SearXNG URL
+    description: >-
+      URL of self-hosted SearXNG instance (when using searxng backend).
+  api_keys:
+    name: Provider API Keys
+    description: >-
+      LLM provider API keys (OpenAI, Anthropic, Google, etc.).
+  tavily_api_key:
+    name: Tavily API Key
+    description: >-
+      API key for Tavily web search.
+  firecrawl_api_key:
+    name: Firecrawl API Key
+    description: >-
+      API key for Firecrawl web scraping.
+  exa_api_key:
+    name: Exa API Key
+    description: >-
+      API key for Exa search.

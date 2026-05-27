@@ -1,6 +1,6 @@
 ---
 name: Hermes Agent
-version: 0.4.0
+version: 0.5.0
 slug: hermes-agent
 description: Autonomous AI agent with OpenAI-compatible API by Nous Research
 url: https://github.com/nishantapatil3/hassio-apps
@@ -18,16 +18,53 @@ ports_description:
   8642/tcp: Hermes Gateway API & health endpoint
   9119/tcp: Hermes Dashboard Web UI
 map:
-  - addon_config:rw
   - config:rw
   - share:rw
 options:
   api_server_key: "hermesagent"
+  gateway_allow_all_users: true
+  dashboard_enabled: true
+  dashboard_port: 9119
+  model_default: "anthropic/claude-sonnet-4-20250514"
+  model_provider: "anthropic"
+  agent_max_turns: 90
+  agent_reasoning_effort: ""
+  memory_enabled: true
+  compression_enabled: true
+  compression_threshold: 0.50
+  terminal_backend: "local"
+  hermes_language: "en"
+  hermes_api_timeout: 1800
+  hermes_yolo_mode: false
+  web_search_backend: ""
+  searxng_url: ""
   api_keys:
     - name: OPENAI_API_KEY
       value: ""
+  tavily_api_key: ""
+  firecrawl_api_key: ""
+  exa_api_key: ""
 schema:
   api_server_key: str
+  gateway_allow_all_users: bool
+  dashboard_enabled: bool
+  dashboard_port: port
+  model_default: str
+  model_provider: list(anthropic|openai|openrouter|google|groq|mistral|ollama)?
+  agent_max_turns: int(1,500)
+  agent_reasoning_effort: list(|minimal|low|medium|high|xhigh)?
+  memory_enabled: bool
+  compression_enabled: bool
+  compression_threshold: "float(0.1,0.9)?"
+  terminal_backend: list(local|docker|ssh)?
+  hermes_language: list(en|zh|ja|de|es|fr|tr|uk)?
+  hermes_api_timeout: int(60,7200)?
+  hermes_yolo_mode: bool
+  web_search_backend: list(|firecrawl|searxng|tavily|exa|parallel)?
+  searxng_url: url?
   api_keys:
     - name: list(OPENAI_API_KEY|ANTHROPIC_API_KEY|GOOGLE_API_KEY|GROQ_API_KEY|MISTRAL_API_KEY|OPENROUTER_API_KEY)
       value: password
+  tavily_api_key: password?
+  firecrawl_api_key: password?
+  exa_api_key: password?
