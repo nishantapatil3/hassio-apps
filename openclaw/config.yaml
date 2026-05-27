@@ -1,6 +1,6 @@
 ---
 name: OpenClaw
-version: 0.1.0
+version: 0.1.1
 slug: openclaw
 description: AI agent gateway with web UI by OpenClaw
 url: https://github.com/nishantapatil3/hassio-apps

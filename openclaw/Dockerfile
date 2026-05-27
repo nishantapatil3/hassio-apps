@@ -5,6 +5,8 @@ FROM ${OPENCLAW_IMAGE}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+USER root
+
 # hadolint ignore=DL3008,DL3015
 RUN apt-get update && apt-get install -y --no-install-recommends \
         jq \
