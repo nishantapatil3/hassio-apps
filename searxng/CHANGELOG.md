@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026.5.26-0037d43d8 - 2026-05-29
+
+- Bump upstream SearXNG image to `searxng/searxng:2026.5.26-0037d43d8`
+
 ## 2026.5.23-323ce7600
 
 - Initial SearXNG add-on import from DDanii/HA-Add-ons-by-DDanii
