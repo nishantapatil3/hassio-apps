@@ -1,4 +1,4 @@
-ARG SEARXNG_IMAGE=searxng/searxng:2026.5.26-0037d43d8
+ARG SEARXNG_IMAGE=searxng/searxng:2026.5.29-4ea5c57a8
 
 FROM ${SEARXNG_IMAGE}
 
