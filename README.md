@@ -6,6 +6,16 @@
 
 This repository contains the following Home Assistant add-ons:
 
+### [SearXNG](searxng/)
+
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports amd64 Architecture][amd64-shield]
+
+Privacy-respecting metasearch engine with Home Assistant ingress support.
+
+- **Port 8080** — Web UI
+- **Ingress** — Sidebar and add-on page access
+
 ### [LiteLLM](litellm/)
 
 ![Supports aarch64 Architecture][aarch64-shield]

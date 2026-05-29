@@ -1,0 +1,7 @@
+---
+configuration:
+  set_base_url_for_ingress:
+    name: Set Base URL for Ingress
+    description: >-
+      Set SEARXNG_BASE_URL from the Home Assistant ingress URL. Keep this
+      enabled when using the sidebar or ingress view.

@@ -1,0 +1,29 @@
+---
+name: SearXNG
+version: 2026.5.23-323ce7600
+slug: searxng
+description: Privacy-respecting metasearch engine
+url: https://github.com/nishantapatil3/hassio-apps
+image: ghcr.io/nishantapatil3/hassio-apps/searxng
+startup: services
+init: false
+hassio_api: true
+ingress: true
+ingress_port: 8080
+panel_icon: mdi:magnify
+webui: "http://[HOST]:[PORT:8080]"
+arch:
+  - aarch64
+  - amd64
+ports:
+  8080/tcp: 8080
+ports_description:
+  8080/tcp: SearXNG web interface
+map:
+  - type: addon_config
+    read_only: false
+    path: /etc/searxng
+options:
+  set_base_url_for_ingress: true
+schema:
+  set_base_url_for_ingress: bool
