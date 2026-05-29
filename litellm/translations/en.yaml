@@ -8,8 +8,15 @@ configuration:
   api_keys:
     name: API Keys
     description: >-
-      Provider API keys. Add one entry per provider (e.g. name: OPENAI_API_KEY,
-      value: sk-...). Reference them in model_list by the name.
+      Provider API keys. Add one entry per provider with any environment
+      variable name (e.g. OPENAI_API_KEY, ANTHROPIC_API_KEY, DEEPSEEK_API_KEY).
+      Reference them in model_list by the same name.
+  environment_variables:
+    name: Environment Variables
+    description: >-
+      Extra environment variables to export before LiteLLM starts. Use this for
+      any LiteLLM, provider, proxy, cloud credential, or SDK option not covered
+      by the other fields.
   model_list:
     name: Models
     description: >-

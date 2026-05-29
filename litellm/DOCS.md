@@ -39,7 +39,43 @@ Leave empty to disable authentication (not recommended for production).
 Controls the verbosity of the add-on logs. Valid values:
 `trace`, `debug`, `info`, `notice`, `warning`, `error`, `fatal`.
 
-### Option: `config_file`
+### Option: `api_keys`
+
+Provider API keys to export as environment variables before LiteLLM starts.
+Names are free-form, so you can use any variable LiteLLM or an upstream SDK
+supports, such as `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`,
+`OPENROUTER_API_KEY`, `DEEPSEEK_API_KEY`, or cloud provider credentials.
+
+Model entries reference these keys with `api_key_name`; the generated LiteLLM
+config uses `os.environ/<NAME>` so secret values are not written into
+`config.yaml`.
+
+### Option: `environment_variables`
+
+Additional environment variables to export before LiteLLM starts. Use this for
+any LiteLLM, provider, proxy, cloud credential, or SDK option that is not a
+direct model API key.
+
+```yaml
+environment_variables:
+  - name: LITELLM_LOG
+    value: info
+  - name: OPENAI_API_BASE
+    value: https://api.openai.com/v1
+  - name: AWS_REGION_NAME
+    value: us-east-1
+```
+
+Environment variable precedence is:
+
+1. `environment_variables`
+2. `api_keys`
+3. `master_key`, when set, writes `LITELLM_MASTER_KEY`
+
+The `log_level` option writes `LITELLM_LOG` only when `LITELLM_LOG` is not
+already set in `environment_variables`.
+
+### Generated `config.yaml`
 
 The full LiteLLM proxy configuration in YAML format. This is where you define
 your model list, provider API keys, routing settings, and more.

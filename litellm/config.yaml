@@ -1,6 +1,6 @@
 ---
 name: LiteLLM
-version: 1.1.9
+version: 1.2.0
 slug: litellm
 description: OpenAI-compatible proxy for 100+ LLM providers
 url: https://github.com/nishantapatil3/hassio-app-litellm
@@ -22,6 +22,7 @@ options:
   api_keys:
     - name: OPENAI_API_KEY
       value: ""
+  environment_variables: []
   model_list:
     - model_name: gpt-4
       model: openai/gpt-4
@@ -35,12 +36,15 @@ options:
 schema:
   master_key: password
   api_keys:
-    - name: list(OPENAI_API_KEY|ANTHROPIC_API_KEY|GOOGLE_API_KEY|AZURE_API_KEY|GROQ_API_KEY|MISTRAL_API_KEY|COHERE_API_KEY|HUGGINGFACE_API_KEY|NVIDIA_NIM_API_KEY|OPENROUTER_API_KEY)
+    - name: str
+      value: password
+  environment_variables:
+    - name: str
       value: password
   model_list:
     - model_name: str
       model: str
-      api_key_name: list(OPENAI_API_KEY|ANTHROPIC_API_KEY|GOOGLE_API_KEY|AZURE_API_KEY|GROQ_API_KEY|MISTRAL_API_KEY|COHERE_API_KEY|HUGGINGFACE_API_KEY|NVIDIA_NIM_API_KEY|OPENROUTER_API_KEY)?
+      api_key_name: str?
       api_base: url?
   general_settings:
     store_model_in_db: bool?

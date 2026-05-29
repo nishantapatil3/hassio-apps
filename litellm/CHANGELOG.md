@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-05-29
+
+### Added
+
+- Add free-form `environment_variables` UI option for any LiteLLM/provider env var
+- Allow free-form provider API key names instead of a fixed dropdown
+- Generate LiteLLM model API keys as `os.environ/<NAME>` references
+- Wire `log_level` to `LITELLM_LOG` unless explicitly overridden
+
 ## [1.1.9] - 2026-05-20
 
 ### Added
@@ -40,4 +49,3 @@ All notable changes to this project will be documented in this file.
 - Structured configuration with separate API keys, model list, and settings
 - Support for aarch64 and amd64 architectures
 - Tag-based versioning with automated releases
-

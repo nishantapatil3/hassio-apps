@@ -35,8 +35,15 @@ model_list:
   - model_name: gpt-4
     model: openai/gpt-4
     api_key_name: OPENAI_API_KEY
+environment_variables:
+  - name: LITELLM_LOG
+    value: info
 log_level: info
 ```
+
+`api_keys` and `environment_variables` both accept free-form environment
+variable names, so provider-specific LiteLLM options can be configured directly
+from the Home Assistant UI.
 
 ## Access
 
