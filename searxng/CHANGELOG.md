@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026.5.31-7159b8aed - 2026-05-31
+
+- Bump upstream SearXNG image to `searxng/searxng:2026.5.31-7159b8aed`
+
 ## 2026.5.30-01159b82f - 2026-05-30
 
 - Bump upstream SearXNG image to `searxng/searxng:2026.5.30-01159b82f`
