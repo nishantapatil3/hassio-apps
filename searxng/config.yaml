@@ -1,6 +1,6 @@
 ---
 name: SearXNG
-version: 2026.6.8-f3fab143b
+version: 2026.6.11-a1490676e
 slug: searxng
 description: Privacy-respecting metasearch engine
 url: https://github.com/nishantapatil3/hassio-apps
