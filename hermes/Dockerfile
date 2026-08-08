@@ -16,7 +16,7 @@ LABEL \
     io.hass.name="Hermes Agent" \
     io.hass.type="app" \
     io.hass.version="${BUILD_VERSION}" \
-    org.opencontainers.image.source="https://github.com/nishantapatil3/hassio-addons"
+    org.opencontainers.image.source="https://github.com/nishantapatil3/hassio-apps"
 
 # The wrapper configures Home Assistant options and then execs the upstream
 # dispatcher, keeping Hermes' s6-overlay process supervisor as PID 1.

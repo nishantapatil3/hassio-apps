@@ -20,6 +20,6 @@ LABEL \
     io.hass.name="PostgreSQL 18" \
     io.hass.type="app" \
     io.hass.version="${BUILD_VERSION}" \
-    org.opencontainers.image.source="https://github.com/nishantapatil3/hassio-addons"
+    org.opencontainers.image.source="https://github.com/nishantapatil3/hassio-apps"
 
 ENTRYPOINT ["/usr/local/bin/postgres-addon"]

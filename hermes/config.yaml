@@ -4,7 +4,7 @@ version: "1.0.0"
 slug: hermes
 description: >-
   Self-improving AI agent with Home Assistant control and messaging gateways.
-url: https://github.com/nishantapatil3/hassio-addons/tree/main/hermes
+url: https://github.com/nishantapatil3/hassio-apps/tree/main/hermes
 arch:
   - aarch64
   - amd64
@@ -66,4 +66,4 @@ schema:
   dashboard_username: str
   dashboard_password: password
   dashboard_secret: password
-image: ghcr.io/nishantapatil3/hermes-agent
+image: ghcr.io/nishantapatil3/hassio-apps-hermes-agent
