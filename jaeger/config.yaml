@@ -1,0 +1,26 @@
+# https://developers.home-assistant.io/docs/apps/configuration#app-configuration
+name: Jaeger
+version: "1.0.0"
+slug: jaeger
+description: >-
+  OpenTelemetry-compatible distributed tracing backend and web UI.
+url: https://github.com/nishantapatil3/hassio-apps/tree/main/jaeger
+arch:
+  - aarch64
+  - amd64
+init: false
+backup: cold
+ports:
+  16686/tcp: 16686
+  4317/tcp: 4317
+  4318/tcp: 4318
+  5778/tcp: 5778
+  9411/tcp: 9411
+ports_description:
+  16686/tcp: Jaeger web UI
+  4317/tcp: OTLP gRPC trace ingestion
+  4318/tcp: OTLP HTTP trace ingestion
+  5778/tcp: Remote sampling API
+  9411/tcp: Zipkin trace ingestion
+webui: http://[HOST]:[PORT:16686]
+image: ghcr.io/nishantapatil3/hassio-apps-jaeger
