@@ -5,12 +5,12 @@ OPTIONS_FILE="/data/options.json"
 
 POSTGRES_USER="postgres"
 POSTGRES_PASSWORD="homeassistant"
-POSTGRES_DB="litellm"
+POSTGRES_DB="postgres"
 
 if [ -f "$OPTIONS_FILE" ]; then
     POSTGRES_USER=$(jq -r '.POSTGRES_USER // "postgres"' "$OPTIONS_FILE")
     POSTGRES_PASSWORD=$(jq -r '.POSTGRES_PASSWORD // "homeassistant"' "$OPTIONS_FILE")
-    POSTGRES_DB=$(jq -r '.POSTGRES_DB // "litellm"' "$OPTIONS_FILE")
+    POSTGRES_DB=$(jq -r '.POSTGRES_DB // "postgres"' "$OPTIONS_FILE")
 fi
 
 export POSTGRES_USER

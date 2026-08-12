@@ -17,15 +17,14 @@ Superuser account name. Default: `postgres`.
 
 ### `POSTGRES_DB`
 
-Name of the default database created on first start. Defaults to `litellm` for the
-bundled LiteLLM add-on.
+Name of the default database created on first start. Default: `postgres`.
 
 ## Connecting
 
 Connect using your Home Assistant IP and port `5432`:
 
 ```
-postgresql://postgres:yourpassword@homeassistant.local:5432/litellm
+postgresql://postgres:yourpassword@homeassistant.local:5432/postgres
 ```
 
 ## Notes
