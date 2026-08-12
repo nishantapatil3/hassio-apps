@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""Configure and start Cognee from Home Assistant app options."""
+
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+import secrets
+
+OPTIONS_FILE = Path(os.environ.get("COGNEE_ADDON_OPTIONS", "/data/options.json"))
+STATE_DIR = Path(os.environ.get("COGNEE_ADDON_STATE", "/data/cognee"))
+SECRETS_FILE = STATE_DIR / "secrets.json"
+UPSTREAM_ENTRYPOINT = "/app/entrypoint.sh"
+
+OPTION_ENVIRONMENT = {
+    "llm_api_key": "LLM_API_KEY",
+    "llm_provider": "LLM_PROVIDER",
+    "llm_model": "LLM_MODEL",
+    "llm_endpoint": "LLM_ENDPOINT",
+    "embedding_api_key": "EMBEDDING_API_KEY",
+    "embedding_provider": "EMBEDDING_PROVIDER",
+    "embedding_model": "EMBEDDING_MODEL",
+    "embedding_endpoint": "EMBEDDING_ENDPOINT",
+    "embedding_dimensions": "EMBEDDING_DIMENSIONS",
+    "cors_allowed_origins": "CORS_ALLOWED_ORIGINS",
+    "log_level": "LOG_LEVEL",
+}
+
+
+def get_options() -> dict:
+    """Read Home Assistant app options."""
+    if not OPTIONS_FILE.exists():
+        return {}
+    return json.loads(OPTIONS_FILE.read_text(encoding="utf-8"))
+
+
+def get_secrets() -> dict[str, str]:
+    """Return stable secrets used to sign authentication tokens."""
+    if SECRETS_FILE.exists():
+        return json.loads(SECRETS_FILE.read_text(encoding="utf-8"))
+
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    generated = {
+        "jwt": secrets.token_urlsafe(48),
+        "verification": secrets.token_urlsafe(48),
+        "password_reset": secrets.token_urlsafe(48),
+    }
+    SECRETS_FILE.write_text(json.dumps(generated), encoding="utf-8")
+    SECRETS_FILE.chmod(0o600)
+    return generated
+
+
+def configure_environment(options: dict) -> None:
+    """Set Cognee storage, security, and provider configuration."""
+    secrets_config = get_secrets()
+    for directory in (
+        STATE_DIR / "data",
+        STATE_DIR / "system" / "databases",
+        STATE_DIR / "cache",
+        STATE_DIR / "logs",
+    ):
+        directory.mkdir(parents=True, exist_ok=True)
+    defaults = {
+        "ENV": "prod",
+        "DEBUG": "false",
+        "HTTP_PORT": "8000",
+        "BIND_ADDRESS": "0.0.0.0",
+        "DATA_ROOT_DIRECTORY": str(STATE_DIR / "data"),
+        "SYSTEM_ROOT_DIRECTORY": str(STATE_DIR / "system"),
+        "CACHE_ROOT_DIRECTORY": str(STATE_DIR / "cache"),
+        "COGNEE_LOGS_DIR": str(STATE_DIR / "logs"),
+        "DB_PROVIDER": "sqlite",
+        "DB_NAME": "cognee_db",
+        "GRAPH_DATABASE_PROVIDER": "kuzu",
+        "GRAPH_DATASET_DATABASE_HANDLER": "kuzu",
+        "VECTOR_DB_PROVIDER": "lancedb",
+        "VECTOR_DATASET_DATABASE_HANDLER": "lancedb",
+        "ENABLE_BACKEND_ACCESS_CONTROL": "true",
+        "REQUIRE_AUTHENTICATION": "true",
+        "HASH_API_KEY": "true",
+        "ACCEPT_LOCAL_FILE_PATH": "false",
+        "FASTAPI_USERS_JWT_SECRET": secrets_config["jwt"],
+        "FASTAPI_USERS_VERIFICATION_TOKEN_SECRET": secrets_config["verification"],
+        "FASTAPI_USERS_RESET_PASSWORD_TOKEN_SECRET": secrets_config["password_reset"],
+    }
+    for name, value in defaults.items():
+        os.environ[name] = value
+
+    for option, environment_name in OPTION_ENVIRONMENT.items():
+        value = options.get(option)
+        if value is not None and str(value).strip():
+            os.environ[environment_name] = str(value).strip()
+
+
+def main() -> int:
+    """Configure the process and replace it with Cognee's entrypoint."""
+    configure_environment(get_options())
+    print(f"Starting Cognee with persistent state in {STATE_DIR}", flush=True)
+    os.execv(UPSTREAM_ENTRYPOINT, [UPSTREAM_ENTRYPOINT])
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

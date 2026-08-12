@@ -12,6 +12,7 @@ https://github.com/nishantapatil3/hassio-apps
 
 ## Apps
 
+- [Cognee](cognee/) — a self-hosted AI memory and knowledge graph API for agents.
 - [LiteLLM](litellm/) — an OpenAI-compatible AI gateway configured for
   OpenRouter, NVIDIA NIM, Claude Code, and Claude Desktop.
 - [PostgreSQL](postgres/) — PostgreSQL 18 database service.

@@ -1,0 +1,37 @@
+network:
+  8000/tcp: Cognee API and interactive API documentation port
+
+configuration:
+  llm_api_key:
+    name: LLM API key
+    description: API key used by Cognee's language model provider.
+  llm_provider:
+    name: LLM provider
+    description: Cognee provider identifier, such as openai, custom, anthropic, or ollama.
+  llm_model:
+    name: LLM model
+    description: Model identifier passed to Cognee and LiteLLM.
+  llm_endpoint:
+    name: LLM endpoint
+    description: Optional endpoint for an OpenAI-compatible or local provider.
+  embedding_api_key:
+    name: Embedding API key
+    description: Optional separate API key for the embedding provider.
+  embedding_provider:
+    name: Embedding provider
+    description: Provider used to create vector embeddings.
+  embedding_model:
+    name: Embedding model
+    description: Model used to create vector embeddings.
+  embedding_endpoint:
+    name: Embedding endpoint
+    description: Optional endpoint for an OpenAI-compatible or local embedding provider.
+  embedding_dimensions:
+    name: Embedding dimensions
+    description: Output dimensions of the configured embedding model.
+  cors_allowed_origins:
+    name: CORS allowed origins
+    description: Comma-separated browser origins allowed to call the API, or * for all origins.
+  log_level:
+    name: Log level
+    description: Minimum severity written to the app log.
