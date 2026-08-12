@@ -1,6 +1,6 @@
-# Home Assistant apps
+# NSP Home Assistant apps
 
-This repository contains Home Assistant apps (formerly called add-ons).
+This repository contains NSP Home Assistant apps (formerly called add-ons).
 
 ## Installation
 

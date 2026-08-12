@@ -1,4 +1,4 @@
 # https://developers.home-assistant.io/docs/apps/repository#repository-configuration
-name: Home Assistant apps
+name: NSP Home Assistant apps
 url: https://github.com/nishantapatil3/hassio-apps
 maintainer: nishantapatil3
