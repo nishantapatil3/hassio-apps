@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.21
+
+- Remove the `openrouter_api_key` add-on option. Provider credentials and models
+  are now configured in the LiteLLM admin UI.
+- Remove the `redis_url` add-on option and disable Redis caching by default.
+  Users can enable Redis directly in `litellm.yaml`.
+- Replace `database_url` with a hostname-only `database_host` option for the
+  bundled PostgreSQL add-on, which ensures the `litellm` database exists.
+- Simplify the bundled configuration; optional integrations are configured in
+  `litellm.yaml` when needed.
+
 ## 1.0.20
 
 - Enable the bundled Redis cache and Prometheus scraping defaults.

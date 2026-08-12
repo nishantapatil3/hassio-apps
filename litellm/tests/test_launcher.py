@@ -26,28 +26,15 @@ class LauncherTests(unittest.TestCase):
 
     def test_default_config_is_valid_yaml_with_required_sections(self):
         config = yaml.safe_load(BUNDLED_CONFIG.read_text(encoding="utf-8"))
-        aliases = {item["model_name"] for item in config["model_list"]}
-        self.assertEqual(
-            aliases,
-            {"claude-haiku-4-5-20251001", "claude-sonnet-4-6", "claude-opus-4-8"},
-        )
-        self.assertIn("prometheus", config["litellm_settings"]["callbacks"])
+        self.assertEqual(config["model_list"], [])
         self.assertIn("guardrails", config)
         self.assertIn("master_key", config["general_settings"])
         self.assertEqual(
             config["general_settings"]["database_url"],
             "os.environ/DATABASE_URL",
         )
-        self.assertTrue(config["litellm_settings"]["cache"])
-        self.assertEqual(
-            config["litellm_settings"]["cache_params"]["url"],
-            "os.environ/REDIS_URL",
-        )
-        for model in config["model_list"]:
-            self.assertEqual(
-                model["litellm_params"]["api_key"],
-                "os.environ/OPENROUTER_API_KEY",
-            )
+        self.assertNotIn("cache", config["litellm_settings"])
+        self.assertNotIn("cache_params", config["litellm_settings"])
 
     def test_addon_config_directory_is_mounted_writable(self):
         config = yaml.safe_load(ADDON_CONFIG.read_text(encoding="utf-8"))
@@ -56,29 +43,28 @@ class LauncherTests(unittest.TestCase):
             config["map"],
         )
         self.assertEqual(
-            config["options"]["database_url"],
-            "postgresql://postgres:homeassistant@db21ed7f-postgres:5432/litellm",
+            config["options"]["database_host"],
+            "db21ed7f-postgres",
         )
-        self.assertEqual(
-            config["options"]["redis_url"],
-            "redis://db21ed7f-redis:6379/0",
-        )
-        self.assertEqual(config["schema"]["database_url"], "str")
-        self.assertEqual(config["schema"]["redis_url"], "str")
+        self.assertEqual(config["schema"]["database_host"], "str")
+        self.assertNotIn("database_url", config["options"])
+        self.assertNotIn("database_url", config["schema"])
+        self.assertNotIn("openrouter_api_key", config["options"])
+        self.assertNotIn("openrouter_api_key", config["schema"])
+        self.assertNotIn("redis_url", config["options"])
+        self.assertNotIn("redis_url", config["schema"])
 
-    def test_database_url_option_is_exported(self):
+    def test_database_host_option_is_exported_as_url(self):
         original_options_file = self.launcher.OPTIONS_FILE
         original_data_dir = self.launcher.DATA_DIR
         original_salt_key_path = self.launcher.SALT_KEY_PATH
         original_database_url = self.launcher.os.environ.get("DATABASE_URL")
-        original_redis_url = self.launcher.os.environ.get("REDIS_URL")
         try:
             with tempfile.TemporaryDirectory() as directory:
                 directory_path = Path(directory)
                 options_file = directory_path / "options.json"
                 options_file.write_text(
-                    '{"database_url": "postgresql://db.example/litellm", '
-                    '"redis_url": "redis://redis.example:6379/0"}',
+                    '{"database_host": "db.example"}',
                     encoding="utf-8",
                 )
                 self.launcher.OPTIONS_FILE = options_file
@@ -89,11 +75,7 @@ class LauncherTests(unittest.TestCase):
 
                 self.assertEqual(
                     self.launcher.os.environ["DATABASE_URL"],
-                    "postgresql://db.example/litellm",
-                )
-                self.assertEqual(
-                    self.launcher.os.environ["REDIS_URL"],
-                    "redis://redis.example:6379/0",
+                    "postgresql://postgres:homeassistant@db.example:5432/litellm",
                 )
         finally:
             self.launcher.OPTIONS_FILE = original_options_file
@@ -103,10 +85,6 @@ class LauncherTests(unittest.TestCase):
                 self.launcher.os.environ.pop("DATABASE_URL", None)
             else:
                 self.launcher.os.environ["DATABASE_URL"] = original_database_url
-            if original_redis_url is None:
-                self.launcher.os.environ.pop("REDIS_URL", None)
-            else:
-                self.launcher.os.environ["REDIS_URL"] = original_redis_url
 
     def test_salt_key_is_stable_and_private(self):
         with tempfile.TemporaryDirectory() as directory:

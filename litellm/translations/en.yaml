@@ -2,9 +2,6 @@ network:
   4000/tcp: LiteLLM API and admin UI port
 
 options:
-  database_url:
-    name: Database URL
-    description: PostgreSQL connection URL used by LiteLLM for its database.
-  redis_url:
-    name: Redis URL
-    description: Redis connection URL used by LiteLLM for response caching.
+  database_host:
+    name: Database host
+    description: Hostname of the PostgreSQL add-on used by LiteLLM.

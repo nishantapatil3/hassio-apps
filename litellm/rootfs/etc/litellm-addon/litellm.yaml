@@ -2,43 +2,7 @@
 # Edit this file and restart the add-on to apply changes.
 # Full reference: https://docs.litellm.ai/docs/proxy/configs
 
-model_list:
-  # ============================================================
-  # Claude Code models — mapped to free models via OpenRouter.
-  # Replace with any supported backend.
-  # ============================================================
-  - model_name: claude-haiku-4-5-20251001
-    litellm_params:
-      model: openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
-      api_key: os.environ/OPENROUTER_API_KEY
-    model_info:
-      supports_function_calling: true
-      supports_web_search: true
-      supports_vision: false
-      cache_creation_input_token_cost: 0
-      cache_read_input_token_cost: 0
-
-  - model_name: claude-sonnet-4-6
-    litellm_params:
-      model: openrouter/nvidia/nemotron-3-super-120b-a12b:free
-      api_key: os.environ/OPENROUTER_API_KEY
-    model_info:
-      supports_function_calling: true
-      supports_web_search: true
-      supports_vision: false
-      cache_creation_input_token_cost: 0
-      cache_read_input_token_cost: 0
-
-  - model_name: claude-opus-4-8
-    litellm_params:
-      model: openrouter/nvidia/nemotron-3-ultra-550b-a55b:free
-      api_key: os.environ/OPENROUTER_API_KEY
-    model_info:
-      supports_function_calling: true
-      supports_web_search: true
-      supports_vision: false
-      cache_creation_input_token_cost: 0
-      cache_read_input_token_cost: 0
+model_list: []
 
 litellm_settings:
   drop_params: true
@@ -47,42 +11,9 @@ litellm_settings:
   global_max_parallel_requests: 100
   allowed_fails: 5
   cooldown_time: 600
-  callbacks:
-    - prometheus
-  # To enable SearXNG web-search interception, replace the callbacks block with:
-  # callbacks:
-  #   - websearch_interception
-  #   - prometheus
-  # websearch_interception_params:
-  #   search_tool_name: searxng-search
-  #   enabled_providers:
-  #     - openrouter
-  #     - anthropic
-  #     - openai
   prometheus_initialize_budget_metrics: true
   prometheus_emit_stream_label: true
   require_auth_for_metrics_endpoint: false
-  cache: true
-  cache_params:
-    type: redis
-    url: os.environ/REDIS_URL
-    namespace: litellm-cache
-    ttl: 600
-
-router_settings:
-  fallbacks:
-    - claude-opus-4-8:
-        - claude-sonnet-4-6
-    - claude-sonnet-4-6:
-        - claude-haiku-4-5-20251001
-
-# To enable SearXNG web-search tool calls, uncomment and fill in your base URL
-# (also update callbacks above):
-# search_tools:
-#   - search_tool_name: searxng-search
-#     litellm_params:
-#       search_provider: searxng
-#       api_base: http://192.168.1.10:8081
 
 general_settings:
   master_key: os.environ/LITELLM_MASTER_KEY
