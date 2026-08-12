@@ -1,4 +1,4 @@
-FROM docker.litellm.ai/berriai/litellm:main-stable@sha256:af806882b7a6ced41658db5b6a7e98ed7b9b51d03b935e0417bf1c8552d688af
+FROM docker.litellm.ai/berriai/litellm:main-stable
 
 ARG BUILD_ARCH
 ARG BUILD_VERSION

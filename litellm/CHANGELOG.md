@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.22
+
+- Track the upstream LiteLLM `main-stable` image directly.
+
 ## 1.0.21
 
 - Remove the `openrouter_api_key` add-on option. Provider credentials and models
