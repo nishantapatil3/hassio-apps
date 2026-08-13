@@ -14,6 +14,7 @@ DATA_DIR = Path(os.environ.get("LITELLM_ADDON_DATA", "/data"))
 CONFIG_DIR = Path(os.environ.get("LITELLM_ADDON_CONFIG", "/config"))
 CONFIG_FILE = CONFIG_DIR / "litellm.yaml"
 SALT_KEY_PATH = DATA_DIR / "salt_key"
+CHATGPT_TOKEN_DIR = DATA_DIR / "chatgpt"
 GUARDRAIL_DIR = Path("/usr/local/lib/litellm-addon")
 BUNDLED_CONFIG = Path("/etc/litellm-addon/litellm.yaml")
 OPTIONS_FILE = Path("/data/options.json")
@@ -44,6 +45,20 @@ def get_options() -> dict:
 def configure_environment() -> None:
     """Set the auto-generated salt key and any user-configured options."""
     os.environ["LITELLM_SALT_KEY"] = get_salt_key()
+    persistent_home = DATA_DIR / "home"
+    persistent_directories = {
+        "HOME": persistent_home,
+        "XDG_CONFIG_HOME": persistent_home / ".config",
+        "XDG_DATA_HOME": persistent_home / ".local/share",
+        "XDG_STATE_HOME": persistent_home / ".local/state",
+    }
+    for variable, directory in persistent_directories.items():
+        directory.mkdir(parents=True, exist_ok=True)
+        directory.chmod(0o700)
+        os.environ[variable] = str(directory)
+    CHATGPT_TOKEN_DIR.mkdir(parents=True, exist_ok=True)
+    CHATGPT_TOKEN_DIR.chmod(0o700)
+    os.environ["CHATGPT_TOKEN_DIR"] = str(CHATGPT_TOKEN_DIR)
     options = get_options()
     master_key = options.get("master_key", "").strip()
     if master_key:

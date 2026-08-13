@@ -58,7 +58,19 @@ class LauncherTests(unittest.TestCase):
         original_options_file = self.launcher.OPTIONS_FILE
         original_data_dir = self.launcher.DATA_DIR
         original_salt_key_path = self.launcher.SALT_KEY_PATH
+        original_chatgpt_token_dir_path = self.launcher.CHATGPT_TOKEN_DIR
         original_database_url = self.launcher.os.environ.get("DATABASE_URL")
+        original_chatgpt_token_dir = self.launcher.os.environ.get("CHATGPT_TOKEN_DIR")
+        persistent_variables = [
+            "HOME",
+            "XDG_CONFIG_HOME",
+            "XDG_DATA_HOME",
+            "XDG_STATE_HOME",
+        ]
+        original_persistent_environment = {
+            variable: self.launcher.os.environ.get(variable)
+            for variable in persistent_variables
+        }
         try:
             with tempfile.TemporaryDirectory() as directory:
                 directory_path = Path(directory)
@@ -70,6 +82,7 @@ class LauncherTests(unittest.TestCase):
                 self.launcher.OPTIONS_FILE = options_file
                 self.launcher.DATA_DIR = directory_path / "data"
                 self.launcher.SALT_KEY_PATH = self.launcher.DATA_DIR / "salt_key"
+                self.launcher.CHATGPT_TOKEN_DIR = self.launcher.DATA_DIR / "chatgpt"
 
                 self.launcher.configure_environment()
 
@@ -77,14 +90,41 @@ class LauncherTests(unittest.TestCase):
                     self.launcher.os.environ["DATABASE_URL"],
                     "postgresql://postgres:homeassistant@db.example:5432/litellm",
                 )
+                self.assertEqual(
+                    self.launcher.os.environ["CHATGPT_TOKEN_DIR"],
+                    str(self.launcher.CHATGPT_TOKEN_DIR),
+                )
+                self.assertTrue(self.launcher.CHATGPT_TOKEN_DIR.is_dir())
+                expected_directories = {
+                    "HOME": self.launcher.DATA_DIR / "home",
+                    "XDG_CONFIG_HOME": self.launcher.DATA_DIR / "home/.config",
+                    "XDG_DATA_HOME": self.launcher.DATA_DIR / "home/.local/share",
+                    "XDG_STATE_HOME": self.launcher.DATA_DIR / "home/.local/state",
+                }
+                for variable, expected_directory in expected_directories.items():
+                    self.assertEqual(
+                        self.launcher.os.environ[variable],
+                        str(expected_directory),
+                    )
+                    self.assertEqual(expected_directory.stat().st_mode & 0o777, 0o700)
         finally:
             self.launcher.OPTIONS_FILE = original_options_file
             self.launcher.DATA_DIR = original_data_dir
             self.launcher.SALT_KEY_PATH = original_salt_key_path
+            self.launcher.CHATGPT_TOKEN_DIR = original_chatgpt_token_dir_path
             if original_database_url is None:
                 self.launcher.os.environ.pop("DATABASE_URL", None)
             else:
                 self.launcher.os.environ["DATABASE_URL"] = original_database_url
+            if original_chatgpt_token_dir is None:
+                self.launcher.os.environ.pop("CHATGPT_TOKEN_DIR", None)
+            else:
+                self.launcher.os.environ["CHATGPT_TOKEN_DIR"] = original_chatgpt_token_dir
+            for variable, original_value in original_persistent_environment.items():
+                if original_value is None:
+                    self.launcher.os.environ.pop(variable, None)
+                else:
+                    self.launcher.os.environ[variable] = original_value
 
     def test_salt_key_is_stable_and_private(self):
         with tempfile.TemporaryDirectory() as directory:

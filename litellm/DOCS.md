@@ -65,6 +65,12 @@ Redis response caching is disabled by default. To enable it, add LiteLLM's
 No models or provider credentials are configured by default. Add them in the
 LiteLLM admin UI; they are persisted in PostgreSQL.
 
+The add-on stores application home, XDG configuration, data, state, and ChatGPT
+device-login credentials in its persistent data directory. Provider credentials
+and settings written to these standard locations survive restarts and upgrades.
+The first request to a `chatgpt/` model prompts for device authentication if no
+valid credentials are stored.
+
 The file guardrail rejects file and document content blocks before a model call.
 
 ## Security

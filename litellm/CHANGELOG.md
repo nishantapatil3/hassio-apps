@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.23
+
+- Persist the application home, XDG configuration, data, state, and ChatGPT
+  device-login OAuth credentials across add-on restarts and upgrades.
+
 ## 1.0.22
 
 - Track the upstream LiteLLM `main-stable` image directly.
